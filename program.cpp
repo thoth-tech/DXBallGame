@@ -18,8 +18,11 @@ const double PADDLE_SPEED = 8;         // Speed of paddle movement
 const double PADDLE_Y = 550;           // Location of paddle on the y axis
 const double PADDLE_HEIGHT = 5;        // Height of the paddle
 const double PADDLE_LENGTH = 100;      // Length of the paddle
-const double MULTIPLIER_DURATION = 10; // Duration in seconds of the score multiplier powerup
+// All times are in seconds
+const double MULTIPLIER_DURATION = 10; // Duration of the score multiplier powerup
 const double NEW_BALL_DELAY = 5;	   // Delay between free new balls
+const double TIME_ON_SCOREBOARD = 120; // Maximum idle time on scoreboard before the game exits to title screen
+const double TIME_ON_TITLE = 600;      // Maximum idle time on title screen before the game closes
 
 // Input keys for player control
 const key_code RIGHT = RIGHT_KEY;
@@ -28,6 +31,7 @@ const key_code UP = UP_KEY;
 const key_code DOWN = DOWN_KEY;
 const key_code START = NUM_1_KEY;
 const key_code P1_B1 = LEFT_CTRL_KEY;
+const key_code P1_B2 = LEFT_ALT_KEY;
 
 
 enum block_kind
@@ -87,8 +91,9 @@ struct
     bool game_won = false;      // True if all levels complete
     int current_level = 1;      // Current level (default starting level = 1)
     bool next_level = true;     // True to proceed to the next level in the next frame
-    double timer = 0;           // Timer for multiplier powerup
+    double multiplierTimer = 0; // Timer for multiplier powerup
 	double extraBallTimer = 0;  // Timer for free new balls
+    double exitTimer = TIME_ON_TITLE;       // Timer for automatically exiting the game
     int score_multiplier = 1;   // Multiplier for score (default starting multiplier = 1)
     double paddle_x;            // Location of the paddle in the x axis
     bool ball_is_held;          // Is the ball being held by the paddle?
@@ -149,8 +154,9 @@ void update_scores()
 void end_game(bool successful)
 {
     fill_rectangle(COLOR_LIGHT_GRAY, 200, 20, 400, 560); //draw the scoreboard background
+    int position = high_score_position();
 
-    if (!game_data.initials_entered && high_score_position() != 10) // draw initial entry screen if current score is a new high score, until initials are submitted
+    if (!game_data.initials_entered && position != 10) // draw initial entry screen if current score is a new high score, until initials are submitted
     {
         draw_text("Enter initials", COLOR_BLACK, font_named("default"), 30, 280, 100);
 
@@ -175,17 +181,20 @@ void end_game(bool successful)
         //change initial
         if (key_typed(UP))
         {
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             if (*initials_entry.current_character == 26) *initials_entry.current_character = 0; // loop back to '-' if going over maximum
             else *initials_entry.current_character = *initials_entry.current_character + 1;
         }
         else if (key_typed(DOWN))
         {
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             if (*initials_entry.current_character == 0) *initials_entry.current_character = 26; // loop back to 'z' if going under minimum
             else *initials_entry.current_character = *initials_entry.current_character - 1;
         }
         //switch which initial is being edited
         else if (key_typed(LEFT) || key_typed(RIGHT))
         {
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             if (initials_entry.current_character == &initials_entry.character1)
             {
                 initials_entry.current_character = &initials_entry.character2;
@@ -197,6 +206,7 @@ void end_game(bool successful)
         }
         if (key_typed(P1_B1))
         {
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             // submit initials
             game_data.initials_entered = true;
             update_scores();
@@ -204,6 +214,9 @@ void end_game(bool successful)
     }
     else // draw scoreboard
     {
+        //skip initals entry screen if score was not a new high score
+        if (position == 10) game_data.initials_entered = true;
+
         if (successful)
         {
             draw_text("You Win!", COLOR_RED, font_named("default"), 20, 340, 30);
@@ -218,7 +231,9 @@ void end_game(bool successful)
             draw_text(json_read_string(game_data.score_rows[i], "initials"), COLOR_WHITE, font_named("default"), 18, 260, 80 + 45 * i); // draw initials
             draw_text("score: " + to_string(json_read_number_as_int(game_data.score_rows[i], "score")), COLOR_WHITE, font_named("default"), 18, 370, 80 + 45 * i); // draw score
         }
-        draw_text("Press start to play again", COLOR_BLACK, font_named("default"), 18, 275, 540);
+        //code to handle inputs on this screen is in main()
+        draw_text("Press start to play again", COLOR_BLACK, font_named("default"), 18, 275, 530);
+        draw_text("Press 2 to exit", COLOR_BLACK, font_named("default"), 18, 275, 550);
     }
 }
 
@@ -605,11 +620,12 @@ void start_level()
             play_sound_effect("sfx_win");
             game_data.game_won = true;
             game_data.game_over = true;
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             break;
     }
     // Reset score multiplier
     game_data.score_multiplier = 1;
-    game_data.timer = 0;
+    game_data.multiplierTimer = 0;
 
     // Remove powerups dropping from last level
     game_data.current_powerups.clear();
@@ -625,13 +641,13 @@ void start_level()
 }
 void reset_game()
 {
-    play_sound_effect("sfx_start_game");
+    if (game_data.game_start) play_sound_effect("sfx_start_game"); //only play sfx if game is being restarted straight from the scoreboard
 	game_data.score = 0;
 	game_data.game_over = false;
 	game_data.game_won = false;
 	game_data.current_level = 1;
 	game_data.next_level = false;
-	game_data.timer = 0;
+	game_data.multiplierTimer = 0;
 	game_data.score_multiplier = 1;
     game_data.extraBallTimer = NEW_BALL_DELAY;
 
@@ -686,6 +702,7 @@ void check_ball_collision(int i)
             //lose the game if there are no more balls remaining
             game_data.game_won = false;
             game_data.game_over = true;
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
             
             game_data.current_powerups.clear(); // Remove existing powerup drops
         }
@@ -772,7 +789,7 @@ void update_powerup_drops(int i)
 		//apply score multiplier powerup
 		else if (game_data.current_powerups[i].kind == SCORE_MULTIPLY)
 		{
-			game_data.timer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
+			game_data.multiplierTimer = MULTIPLIER_DURATION; // set timer for MULTIPLIER_DURATION seconds
 			if(game_data.score_multiplier < 5) game_data.score_multiplier++;
 		}
 		//remove powerup drop
@@ -812,7 +829,7 @@ void draw_game()
 		//Draw multiplier foreground
 		bitmap filled_bitmap = bitmap_named("gauge_full_" + to_string(game_data.score_multiplier)); //Get bitmap with appropriate number
 		rectangle bitmap_part = bitmap_bounding_rectangle(filled_bitmap); //Create bounding rectange for displaying part of the sprite's height
-		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.timer/10.0; //Shrink foreground as the timer goes down
+		bitmap_part.height = bitmap_height(filled_bitmap) * game_data.multiplierTimer/10.0; //Shrink foreground as the timer goes down
 		bitmap_part.y = bitmap_height(filled_bitmap) - bitmap_part.height; //Move foreground down to line up with background
 		draw_bitmap(filled_bitmap, 171 + (20*floor(log10(game_data.score))), 25 + (bitmap_height(filled_bitmap) - bitmap_part.height), option_scale_bmp(1,1,option_part_bmp(bitmap_part))); //draw foreground
 	}
@@ -833,9 +850,30 @@ int main()
         game_data.score_rows[i] = json_read_object(game_data.scores, "row" + to_string(i));
     }
 
-    while(!key_down(ESCAPE_KEY))
+    bool game_closed = false;
+    
+    while(!game_closed)
     {
 		process_events(); //check keyboard state
+
+        // exiting to title screen and closing the game
+        if (key_down(ESCAPE_KEY)) game_closed = true;
+        if (game_data.exitTimer > 0) {
+            game_data.exitTimer -= (1.0 / 60.0); //count down exit timer
+            //write_line(game_data.exitTimer);
+        }
+        else if (game_data.game_start && game_data.game_over) //if on initial entry or scoreboard screen when timer runs out
+        {
+            //return to title screen
+            game_data.game_start = false;
+            game_data.exitTimer = TIME_ON_TITLE;
+            reset_game();
+        }
+        else if (!game_data.game_start)//if on title screen when timer runs out
+        {
+            //close the game
+            game_closed = true;
+        }
 
         if(!game_data.game_start)
         {
@@ -843,8 +881,8 @@ int main()
         }
         else
         {
-            if (game_data.timer > 0) game_data.timer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the timer is in use
-            else if (game_data.timer < 0) game_data.timer = 0;
+            if (game_data.multiplierTimer > 0) game_data.multiplierTimer -= (1.0 / 60.0); //count down 1/60 seconds every frame if the timer is in use
+            else if (game_data.multiplierTimer < 0) game_data.multiplierTimer = 0;
             else game_data.score_multiplier = 1;
 
             if (!game_data.ball_is_held) //if the player has started the game by releasing the first ball
@@ -895,22 +933,42 @@ int main()
             if (game_data.game_over)
             {
                 end_game(game_data.game_won);
-                
-                if (key_typed(START)) reset_game();
-            }
 
-            // debug cheats should be mapped to keys that are not usable with the arcade machine keyboard emulator
-            // Cheat to change level for development purpose
-            if (key_typed(NUM_9_KEY)) { game_data.next_level = true; game_data.current_level++; }
-            
-            // Cheat to increase multiplier for development purpose
-            if (key_typed(NUM_0_KEY))
-            {
-                game_data.timer = MULTIPLIER_DURATION;
-                if(game_data.score_multiplier < 5) game_data.score_multiplier++;
+                if (game_data.initials_entered) {
+                    if (key_typed(START)) reset_game();
+                    if (key_typed(P1_B2))
+                    {
+                        game_data.game_start = false;
+                        game_data.exitTimer = TIME_ON_TITLE;
+                        reset_game();
+                    }
+                }
             }
         }
-        
+
+        // debug cheats should be mapped to keys that are not usable with the arcade machine keyboard emulator
+        // Set exit timer to 1 second so timer can be tested without waiting
+        if (key_typed(NUM_7_KEY)) game_data.exitTimer = 1;
+        // Lose the game to test scoreboard
+        if (key_typed(NUM_8_KEY))
+        {
+            game_data.game_won = false;
+            game_data.game_over = true;
+            game_data.exitTimer = TIME_ON_SCOREBOARD;
+            game_data.current_balls.clear();
+            game_data.current_powerups.clear(); // Remove existing powerup drops
+        }
+
+        // Change level for development purpose
+        if (key_typed(NUM_9_KEY)) { game_data.next_level = true; game_data.current_level++; }
+
+        // Increase multiplier for development purpose
+        if (key_typed(NUM_0_KEY))
+        {
+            game_data.multiplierTimer = MULTIPLIER_DURATION;
+            if (game_data.score_multiplier < 5) game_data.score_multiplier++;
+        }
+
         refresh_screen(60);
     }
     return 0;
