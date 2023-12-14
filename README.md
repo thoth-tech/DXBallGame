@@ -29,7 +29,7 @@ Two major problems in C++ is complex during a very large high-level program, C++
 
 Despite the disadvantages, the main reason for the team to choose C++ because some members had more experience in the language. This language was used in SIT102 Introduction to Programming, which also made use of SplashKit. Since the team had a clear language preference, C++ was chosen as the way to go.
 
-#### Software Used
+### Software Used
 
 We also use GitHub to store and share our work within the team. GitHub is a platform used to manage open-source projects. It is free to use for open-source projects and includes a wiki and issue tracker.
 
@@ -50,7 +50,7 @@ We have used  basic shapes like circle for the ball and rectangle for the blocks
 
 The draw_blocks function in the code was made to help drawing all the blocks to the environment. This function is mainly used to take an array of blocks and iterate it to draw each block on the scene. If a particular block has been broken, it will not be drawn to the environment.
 
-#### Types of Bricks
+### Types of Bricks
 
 Currently, three different types of bricks are being used in the game.
 
@@ -58,41 +58,45 @@ Currently, three different types of bricks are being used in the game.
 2. **Dual Collision Bricks**: These bricks can be destroyed after colliding with the ball twice. They have been designed to offer the player medium difficulty to clear the level with.
 3. **Hidden Blocks**: These blocks are invisible to the player on the first playthrough. These blocks become visible once the ball comes in contact with the brick. Although, these blocks are quite easier to clear with as they can be broken on the second playthrough basically becoming a single collision brick.
 
-#### Controls of the game
+### Controls of the game
 
-1. **Controlling the player movement**: The function that is being used to control players is **process_events()**. The key part of the function is to allow SplashKit to react to user input e.g., keyboard presses.
+**Controlling the player movement**: The function that is being used to control players is ``process_events()``. The key part of the function is to allow SplashKit to react to user input e.g., keyboard presses.
+
 The controls on PC, for the actual gameplay are:
-a. **Left Arrow** – Move the paddle to the left.
-b. **Right Arrow** – Move the paddle to the right.
+
+- **Left Arrow** – Move the paddle to the left.
+- **Right Arrow** – Move the paddle to the right.
+
 The controls on PC for the user interface elements are:
-a. **Left Arrow** – Swap between the initials being selected during high score nickname input.
-b. **Right Arrow** – Swap between the initials being selected during high score nickname input.
-c. **Up Arrow** – Swap to the next letter when inputting initials for high score nickname.
-d. **Down Arrow** – Swap to the previous letter when inputting initials for high score nickname.
-e. **Left Control** - When the user interface asks for you to press '1', it is waiting/checking for 'left control'.
-f. **Left Alt** - When the user interface asks for you to press '2', it is waiting/checking for 'left control'.
-g. **'1' Key** - When the user interface asks for you to press 'Start', it is waiting/checking for the number '1'.
 
-2. **Controlling the ball movement**: The structure that is used to control ball movement is  **ball_data** that contains the direction of the ball. The variable **bool_up** decides if the ball moves upwards or downwards on the y axis, while **bool_right** decides if the ball moves towards the left or right on the x axis. For example, if **bool_up** and **bool_right** is true, the ball is moving diagonally upwards towards the right side.
+- **Left Arrow** – Swap between the initials being selected during high score nickname input.
+- **Right Arrow** – Swap between the initials being selected during high score nickname input.
+- **Up Arrow** – Swap to the next letter when inputting initials for high score nickname.
+- **Down Arrow** – Swap to the previous letter when inputting initials for high score nickname.
+- **Left Control** - When the user interface asks for you to press ``1``, it is waiting/checking for 'Left Control'.
+- **Left Alt** - When the user interface asks for you to press ``2``, it is waiting/checking for 'Left Alt'.
+- **'1' Key** - When the user interface asks for you to press ``Start``, it is waiting/checking for the number '1'.
 
-3. **Continuous Ball Movement until stoppage**: The ball follows the laws of physics and to the other direction when colliding with the walls and bricks. The collision is detected by evaluating the ball location. When the edges of the ball is at the location of the edges of the walls or the blocks, the ball will bounce. This functionality is included under the function **check_ball_collision**.  
+**Controlling the ball movement**: The structure that is used to control ball movement is  ``ball_data`` that contains the direction of the ball. The variable ``bool_up`` decides if the ball moves upwards or downwards on the y axis, while ``bool_right`` decides if the ball moves towards the left or right on the x axis. For example, if ``bool_up`` and ``bool_right`` is true, the ball is moving diagonally upwards towards the right side.
 
-4. **End the game if out of scope**: When the ball hits the ground, the ball is removed. If there is no more presence of the ball in the game, the game state variables are set to: **game_over = true, game_won = false**. This will show a text saying **You lose, press R to try again**. The player can then press **R** to restart the game.
+**Continuous Ball Movement until stoppage**: The ball follows the laws of physics and to the other direction when colliding with the walls and bricks. The collision is detected by evaluating the ball location. When the edges of the ball is at the location of the edges of the walls or the blocks, the ball will bounce. This functionality is included under the function ``check_ball_collision``.  
 
-#### Scoring in the game
+**End the game if out of scope**: When the ball hits the ground, the ball is removed. If there is no more presence of the ball in the game, the game state variables are set to: ``game_over = true, game_won = false``. This will show a text saying ``Game Over``.
 
-1. **Sensing the breakage of the brick**: The **brick_data** structure contains the brick's hit point. Each time the brick collides with a ball, the value of the hit point is reduced. When the value hits **0**, the brick is broken and score is added.
+### Scoring in the game
 
-2. **Calculating scores in the game**: The scoring system is **Ax1** point added to the score when a brick is broken, where **A** is the amount of the points accumulated by the player until that point in the game. Each time a block is broken, the score is increased by one unit. When the ball finally goes out of scope, the final value on **A** is displayed.
+1. **Sensing the breakage of the brick**: The ``brick_data`` structure contains the brick's hit point. Each time the brick collides with a ball, the value of the hit point is reduced. When the value hits ``0``, the brick is broken and score is added.
 
-3. **Proceeding to the next level**: The **remaining_blocks** variable determines how many bricks are left in the game. It has a predefined value pertaining to that level depending on the number of blocks in the level. Once it reaches zero, the Boolean variable **next_level** becomes true and the function to spawn the next level is called.
+2. **Calculating scores in the game**: The scoring system is ``Ax1`` point added to the score when a brick is broken, where ``A`` is the amount of the points accumulated by the player until that point in the game. Each time a block is broken, the score is increased by one unit. When the ball finally goes out of scope, the final value on ``A`` is displayed.
 
-#### Powerups
+3. **Proceeding to the next level**: The ``remaining_blocks`` variable determines how many bricks are left in the game. It has a predefined value pertaining to that level depending on the number of blocks in the level. Once it reaches zero, the Boolean variable ``next_level`` becomes true and the function to spawn the next level is called.
 
-1. **Multiple Balls** – Based on the score limiter, multiple balls can be generated to break the balls much more effectively and easily.
-2. **Score multipliers** -  
+### Powerups
 
-#### Levels
+1. **Multiple Balls** – Based on the score limiter, multiple balls can be generated to break the blocks much more effectively and easily.
+2. **Score Multipliers** -  Temporarily multiplies all score gain by the stated value of the multiplier.
+
+### Levels
 
 We currently have four levels that each introduce a new gameplay mechanic, which are the different types of bricks in this case.
 
@@ -110,10 +114,11 @@ Future ideas for the game can include lives of the player (standard of 3 lives),
 ## _Sprites of the game_ (Harney)
 
 Sprites include:
--Different coloured blocks/bricks.
--multiplier score (x2, x3, x4, x5) gauge.
--power ups (transparent images drop down).
--Platform.
--ball/s.
--Score text
--Multiplier text
+
+- Different coloured blocks/bricks.
+- multiplier score (x2, x3, x4, x5) gauge.
+- power ups (transparent images drop down).
+- Platform.
+- ball/s.
+- Score text
+- Multiplier text
