@@ -32,7 +32,7 @@ const key_code P1_B2 = X_KEY;
 enum block_kind {
     SINGLE_HIT,
     DOUBLE_HIT,
-    HIDDEN
+    HIDDEN // Bricks hidden from the player before being hit, then take one more hit to be destroyed
 };
 
 enum powerups {

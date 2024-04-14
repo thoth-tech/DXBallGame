@@ -1,5 +1,6 @@
 #include "level_data.h"
 #include "game_data.h"
+#include "utilities.h"
 
 block_data * spawn_blocks_level1()
 {
