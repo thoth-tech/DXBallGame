@@ -124,7 +124,9 @@ int main() {
                 }
             }
         }
-        // Debug cheats (not available in production build)
+        // debug cheats should be mapped to keys that are not usable with the arcade machine keyboard emulator
+        // Set exit timer to 1 second so timer can be tested without waiting
+        // TODO: These should not be available in any production build and should be at the very least gated behind a debug flag
         if (key_typed(NUM_7_KEY)) {
             game_data.exit_timer = 1;
         }

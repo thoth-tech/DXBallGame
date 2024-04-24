@@ -1,3 +1,17 @@
+# Notes post refactor April 2024
+
+The codebase has been brought in-line with modern cpp convention and is far more ogranised in terms of its file structure, declaration patterns and slioing of functionality.
+
+There are some major areas of improvement which have been identified and should be much easier to reason about now:
+- Many functions implicitly access and mutate global state, this should be rectified prior to anything else as it is terrible practice and makes the codebase far more difficult to reason about. Any and all mutable data scoped to a function should be done so explicitly.
+- Many antipatterns currently exist where one routine refers to and mutates both the abstract state of the game AND informs / executes rendering functionality, these should be completely decoupled.
+
+ie. `end_game()` should only be responsible for updating the game state to reflect the game ending (it should also accept the game state as an argument), and not also be responsible for rendering the game over screen (or drawing _anything_).
+
+- Some fun stuff could be the redesign of level generation patterns to be a function of gamestate values rather than static function per level etc.
+
+/- Oscar Harris <T1 2024>
+
 # Documentation on Splashkit's Brick Breaker/Breakout game - 'DX game'
 
 | Members | Roles |
@@ -79,7 +93,7 @@ The controls on PC for the user interface elements are:
 
 **Controlling the ball movement**: The structure that is used to control ball movement is  ``ball_data`` that contains the direction of the ball. The variable ``bool_up`` decides if the ball moves upwards or downwards on the y axis, while ``bool_right`` decides if the ball moves towards the left or right on the x axis. For example, if ``bool_up`` and ``bool_right`` is true, the ball is moving diagonally upwards towards the right side.
 
-**Continuous Ball Movement until stoppage**: The ball follows the laws of physics and to the other direction when colliding with the walls and bricks. The collision is detected by evaluating the ball location. When the edges of the ball is at the location of the edges of the walls or the blocks, the ball will bounce. This functionality is included under the function ``check_ball_collision``.  
+**Continuous Ball Movement until stoppage**: The ball follows the laws of physics and to the other direction when colliding with the walls and bricks. The collision is detected by evaluating the ball location. When the edges of the ball is at the location of the edges of the walls or the blocks, the ball will bounce. This functionality is included under the function ``check_ball_collision``.
 
 **End the game if out of scope**: When the ball hits the ground, the ball is removed. If there is no more presence of the ball in the game, the game state variables are set to: ``game_over = true, game_won = false``. This will show a text saying ``Game Over``.
 
