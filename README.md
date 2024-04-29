@@ -3,7 +3,7 @@
 The codebase has been brought in-line with modern cpp convention and is far more ogranised in terms of its file structure, declaration patterns and slioing of functionality.
 
 There are some major areas of improvement which have been identified and should be much easier to reason about now:
-- Many functions implicitly access and mutate global state, this should be rectified prior to anything else as it is terrible practice and makes the codebase far more difficult to reason about. Any and all mutable data scoped to a function should be done so explicitly.
+- Many functions implicitly access and mutate global state, this should be rectified prior to anything else as it is generally very bad practice and makes the codebase far more difficult to reason about. Any and all mutable data scoped to a function should be done so explicitly.
 - Many antipatterns currently exist where one routine refers to and mutates both the abstract state of the game AND informs / executes rendering functionality, these should be completely decoupled.
 
 ie. `end_game()` should only be responsible for updating the game state to reflect the game ending (it should also accept the game state as an argument), and not also be responsible for rendering the game over screen (or drawing _anything_).
