@@ -56,26 +56,26 @@ struct PowerUpDropData {
  * @brief Represents the game data.
  */
 struct GameData {
-    std::unique_ptr<BlockData[]> blocks;    ///< The blocks in the current level.
+    std::unique_ptr<BlockData[]> blocks;              ///< The blocks in the current level.
     std::vector<PowerUpDropData> current_power_ups;   ///< The current power-up drops.
-    std::vector<BallData> current_balls;     ///< The current balls in play.
-    int remaining_blocks;                    ///< The number of remaining blocks in the level.
-    int blocks_in_level;                     ///< The total number of blocks in the level.
-    int score = 0;                           ///< The player's score.
-    bool game_start = false;                 ///< Indicates if the game has started.
-    bool game_over = false;                  ///< Indicates if the game is over.
-    bool game_won = false;                   ///< Indicates if the player has won the game.
-    int current_level = 1;                   ///< The current level.
-    bool next_level = true;                  ///< Indicates if the player should proceed to the next level.
-    double multiplier_timer = 0;             ///< The timer for the score multiplier power-up.
-    double extra_ball_timer = 0;             ///< The timer for spawning extra balls.
-    double exit_timer = TIME_ON_TITLE;       ///< The timer for exiting the game.
-    int score_multiplier = 1;                ///< The current score multiplier.
-    double paddle_x;                         ///< The x-coordinate of the paddle.
-    bool ball_is_held;                       ///< Indicates if the ball is being held by the paddle.
-    json scores;                             ///< The high scores data.
-    json score_rows[10];                     ///< The individual score rows.
-    bool initials_entered = false;           ///< Indicates if the player's initials have been entered.
+    std::vector<BallData> current_balls;              ///< The current balls in play.
+    int remaining_blocks;                             ///< The number of remaining blocks in the level.
+    int blocks_in_level;                              ///< The total number of blocks in the level.
+    int score = 0;                                    ///< The player's score.
+    bool game_start = false;                          ///< Indicates if the game has started.
+    bool game_over = false;                           ///< Indicates if the game is over.
+    bool game_won = false;                            ///< Indicates if the player has won the game.
+    int current_level = 1;                            ///< The current level.
+    bool next_level = true;                           ///< Indicates if the player should proceed to the next level.
+    double multiplier_timer = 0;                      ///< The timer for the score multiplier power-up.
+    double extra_ball_timer = 0;                      ///< The timer for spawning extra balls.
+    double exit_timer = TIME_ON_TITLE;                ///< The timer for exiting the game.
+    int score_multiplier = 1;                         ///< The current score multiplier.
+    double paddle_x;                                  ///< The x-coordinate of the paddle.
+    bool ball_is_held;                                ///< Indicates if the ball is being held by the paddle.
+    json scores;                                      ///< The high scores data.
+    json score_rows[10];                              ///< The individual score rows.
+    bool initials_entered = false;                    ///< Indicates if the player's initials have been entered.
 };
 
 /**

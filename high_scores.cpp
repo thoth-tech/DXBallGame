@@ -18,8 +18,10 @@ void update_high_scores() {
 
     // Shift the scores below the current position down by one position
     for (int i = 9; i > position; i--) {
-        json_set_number(game_data.score_rows[i], "score", json_read_number_as_int(game_data.score_rows[i - 1], "score"));
-        json_set_string(game_data.score_rows[i], "initials", json_read_string(game_data.score_rows[i - 1], "initials"));
+        const string previous_initials = json_read_string(game_data.score_rows[i - 1], "initials");
+        const int previous_score = json_read_number_as_int(game_data.score_rows[i - 1], "score");
+        json_set_number(game_data.score_rows[i], "score", previous_score);
+        json_set_string(game_data.score_rows[i], "initials", previous_initials);
     }
 
     // Insert the current score and initials at the calculated position

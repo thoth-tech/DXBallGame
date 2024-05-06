@@ -8,16 +8,16 @@
         "score": 1141
     },
     "row1": {
+        "initials": "CC",
+        "score": 16
+    },
+    "row2": {
         "initials": "HF",
         "score": 2
     },
-    "row2": {
+    "row3": {
         "initials": "XX",
         "score": 2
-    },
-    "row3": {
-        "initials": "--",
-        "score": 1
     },
     "row4": {
         "initials": "--",
@@ -29,7 +29,7 @@
     },
     "row6": {
         "initials": "--",
-        "score": 0
+        "score": 1
     },
     "row7": {
         "initials": "--",

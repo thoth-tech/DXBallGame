@@ -127,10 +127,12 @@ void end_game(bool successful) {
 
         // Display high scores
         for (int i = 0; i <= 9; i++) {
+            const string name = json_read_string(game_data.score_rows[i], "initials");
+            const string score = std::to_string(json_read_number_as_int(game_data.score_rows[i], "score"));
             fill_rectangle(COLOR_GRAY, 220, 70 + 45 * i, 360, 40);
             draw_text(std::to_string(i + 1) + ".", COLOR_WHITE, font_named("default"), 18, 230, 80 + 45 * i);
-            draw_text(json_read_string(game_data.score_rows[i], "initials"), COLOR_WHITE, font_named("default"), 18, 260, 80 + 45 * i);
-            draw_text("score: " + std::to_string(json_read_number_as_int(game_data.score_rows[i], "score")), COLOR_WHITE, font_named("default"), 18, 370, 80 + 45 * i);
+            draw_text(name, COLOR_WHITE, font_named("default"), 18, 260, 80 + 45 * i);
+            draw_text("score: " + score, COLOR_WHITE, font_named("default"), 18, 370, 80 + 45 * i);
         }
         draw_text("Press start to play again", COLOR_BLACK, font_named("default"), 18, 275, 530);
         draw_text("Press 2 to exit", COLOR_BLACK, font_named("default"), 18, 275, 550);
