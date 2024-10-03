@@ -28,9 +28,9 @@ A hectic brick-breaker (Breakout clone) supporting one player. The player contro
 
 ## Screenshots
 
-![](/screenshot-01.png)
+![](/docs/screenshot-01.png)
 
-![](/screenshot-02.png)
+![](/docs/screenshot-02.png)
 
 ## Credits
 
