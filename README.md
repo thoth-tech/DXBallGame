@@ -2,6 +2,12 @@
     <img width="150px" src="https://github.com/thoth-tech/.github/blob/main/images/splashkit.png"/>
 </p>
 
+![GitHub contributors](https://img.shields.io/github/contributors/thoth-tech/DXBallGame?label=Contributors&color=F5A623)
+![GitHub issues](https://img.shields.io/github/issues/thoth-tech/DXBallGame?label=Issues&color=F5A623)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/thoth-tech/DXBallGame?label=Pull%20Requests&color=F5A623)
+![Forks](https://img.shields.io/github/forks/thoth-tech/DXBallGame?label=Forks&color=F5A623)
+![Stars](https://img.shields.io/github/stars/thoth-tech/DXBallGame?label=Stars&color=F5A623)
+
 # DX Game (Brick Breaker / Breakout)
 
 **DX Game** is a modern reimagining of the classic brick-breaking games **Breakout** and **DX-Ball**, developed using C++ and SplashKit. This project demonstrates key game development concepts, serves as an educational resource, and showcases the potential of the SplashKit SDK for both arcade and Raspberry Pi environments.
