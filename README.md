@@ -2,11 +2,11 @@
     <img width="150px" src="https://github.com/thoth-tech/.github/blob/main/images/splashkit.png"/>
 </p>
 
-![GitHub contributors](https://img.shields.io/github/contributors/thoth-tech/DXBallGame?label=Contributors&color=F5A623)
-![GitHub issues](https://img.shields.io/github/issues/thoth-tech/DXBallGame?label=Issues&color=F5A623)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/thoth-tech/DXBallGame?label=Pull%20Requests&color=F5A623)
-![Forks](https://img.shields.io/github/forks/thoth-tech/DXBallGame?label=Forks&color=F5A623)
-![Stars](https://img.shields.io/github/stars/thoth-tech/DXBallGame?label=Stars&color=F5A623)
+[![GitHub contributors](https://img.shields.io/github/contributors/thoth-tech/DXBallGame?label=Contributors&color=F5A623)](https://github.com/thoth-tech/DXBallGame/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/thoth-tech/DXBallGame?label=Issues&color=F5A623)](https://github.com/thoth-tech/DXBallGame/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/thoth-tech/DXBallGame?label=Pull%20Requests&color=F5A623)](https://github.com/thoth-tech/DXBallGame/pulls)
+[![Forks](https://img.shields.io/github/forks/thoth-tech/DXBallGame?label=Forks&color=F5A623)](https://github.com/thoth-tech/DXBallGame/network/members)
+[![Stars](https://img.shields.io/github/stars/thoth-tech/DXBallGame?label=Stars&color=F5A623)](https://github.com/thoth-tech/DXBallGame/stargazers)
 
 # DX Game (Brick Breaker / Breakout)
 
